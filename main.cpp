@@ -9,11 +9,31 @@
 #include "BinaryStream.h"
 #include "Deserializer.h"
 
-void printObject(Amf3TypeObject o);
+void printType(Amf3Type * ptr, unsigned int indent);
+void printTypeObject(Amf3TypeObject *o, unsigned int indent);
 
-void printObject(Amf3TypeObject o)
+void printType(Amf3Type * ptr, unsigned int indent)
 {
-	std::cout << "Object {}" << std::endl;
+	switch(ptr->type())
+	{
+	case AMF3_OBJECT:
+		printTypeObject(reinterpret_cast<Amf3TypeObject*>(ptr), indent);
+		break;
+	default:
+		throw "UNKNOWN TYPE";
+	}
+}
+
+void printTypeObject(Amf3TypeObject *o, unsigned int indent)
+{
+	std::cout<<"Object:"<<std::endl;
+	std::cout<<"properties="<<o->properties.size()<<std::endl;
+
+	ObjectPropertiesType::iterator it = o->properties.begin();
+	while(it != o->properties.end()) {
+		std::cout<<"  "<<(*it).first<<std::endl;
+		++it;
+	}
 }
 
 int main(int argc, char* argv[])
@@ -30,7 +50,7 @@ int main(int argc, char* argv[])
 		Amf3Type ttt = decoder.readType();
 
 		std::cout<<"type="<<(int)ttt.type()<<std::endl;
-		printObject(reinterpret_cast<Amf3TypeObject>(ttt));
+		printType(&ttt, 0);
 	}
 	catch (const char * msg) {
 		std::cout<<"Exception: '"<<msg<<"'"<<std::endl;

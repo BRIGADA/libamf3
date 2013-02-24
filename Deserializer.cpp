@@ -21,7 +21,7 @@ Deserializer::~Deserializer() {
 }
 
 Amf3Type Deserializer::readType() {
-	std::cout<<">>> "<< __FUNCTION__<<std::endl;
+//	std::cout<<">>> "<< __FUNCTION__<<std::endl;
 
 	uint8_t t = _stream.read8();
 	switch(t)
@@ -52,15 +52,15 @@ Amf3Type Deserializer::readType() {
 }
 
 Amf3TypeObject Deserializer::readObject() {
-	std::cout<<">>> "<< __FUNCTION__<<std::endl;
+//	std::cout<<">>> "<< __FUNCTION__<<std::endl;
 
 	uint32_t traitsInfo = this->readInteger();
-	std::cout<<string_sprintf("traitInfo=0x%08x", traitsInfo)<<std::endl;
+//	std::cout<<string_sprintf("traitInfo=0x%08x", traitsInfo)<<std::endl;
 
 	bool storedObject = (traitsInfo & 1) == 0;
 	traitsInfo = traitsInfo >> 1;
 
-	std::cout<<"storedObject="<<storedObject<<std::endl;
+//	std::cout<<"storedObject="<<storedObject<<std::endl;
 	if(storedObject) {
 		return _referenceObjects[traitsInfo];
 	}
@@ -69,7 +69,7 @@ Amf3TypeObject Deserializer::readObject() {
 		traitsInfo = traitsInfo >> 1;
 		ReferenceDefenitionType classDef;
 
-		std::cout<<"storedClass="<<storedClass<<std::endl;
+//		std::cout<<"storedClass="<<storedClass<<std::endl;
 		if(storedClass) {
 			classDef = _referenceDefenitions[traitsInfo];
 		}
@@ -85,7 +85,7 @@ Amf3TypeObject Deserializer::readObject() {
 
 		switch(classDef.encoding) {
 		case ET_EXTERNAL:
-			std::cout<<"ET_EXTERNAL"<<std::endl;
+//			std::cout<<"ET_EXTERNAL"<<std::endl;
 			if(!storedClass) {
 				this->_referenceDefenitions.push_back(classDef);
 			}
@@ -93,7 +93,7 @@ Amf3TypeObject Deserializer::readObject() {
 			break;
 
 		case ET_DYNAMIC: {
-			std::cout<<"ET_DYNAMIC"<<std::endl;
+//			std::cout<<"ET_DYNAMIC"<<std::endl;
 
 			if(!storedClass) {
 				this->_referenceDefenitions.push_back(classDef);

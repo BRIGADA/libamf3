@@ -3,9 +3,6 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-O_SRCS += \
-../BinaryStream.o 
-
 CPP_SRCS += \
 ../Amf3Type.cpp \
 ../Amf3TypeBoolean.cpp \
